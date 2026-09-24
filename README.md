@@ -57,7 +57,7 @@ Point it at any image from a CTF challenge. It automatically:
 pip install rich pillow numpy
 
 # 2. Run it
-python prodigy.py challenge.png
+python main.py challenge.png
 ```
 
 That's it. The script auto-uses `/usr/share/wordlists/rockyou.txt` for brute-forcing and looks for `flag{...}` patterns.
@@ -135,7 +135,7 @@ Without `stegseek`, the script still works — it uses a slow Python loop over `
 ### Basic syntax
 
 ```bash
-python prodigy.py <image> [options]
+python main.py <image> [options]
 ```
 
 ### All options
@@ -165,7 +165,7 @@ Supply a custom wordlist for:
 - **ZIP archive** password cracking
 
 ```bash
-python prodigy.py challenge.jpg -w /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt
+python main.py challenge.jpg -w /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt
 ```
 
 If you don't pass `-w`, the script defaults to `/usr/share/wordlists/rockyou.txt`. If that file doesn't exist, the wordlist stage is skipped silently.
@@ -175,7 +175,7 @@ If you don't pass `-w`, the script defaults to `/usr/share/wordlists/rockyou.txt
 Skip the time-consuming cracking stages. Great for quick recon:
 
 ```bash
-python prodigy.py challenge.png -i
+python main.py challenge.png -i
 ```
 
 **What still runs:** file recon, metadata, strings, binwalk, PNG check, LSB, visual dumps, GIF frames.
@@ -194,13 +194,13 @@ For a custom format, pass a regex:
 
 ```bash
 # HTB flags
-python prodigy.py challenge.png -f "HTB\{.*?\}"
+python main.py challenge.png -f "HTB\{.*?\}"
 
 # Two-word flags separated by underscore
-python prodigy.py challenge.png -f "[A-Z]+_[A-Z]+_\{.*?\}"
+python main.py challenge.png -f "[A-Z]+_[A-Z]+_\{.*?\}"
 
 # Flag with no braces (rare)
-python prodigy.py challenge.png -f "FLAG-[A-Z0-9]{16}"
+python main.py challenge.png -f "FLAG-[A-Z0-9]{16}"
 ```
 
 > **Tip:** Wrap the regex in double quotes so your shell doesn't mangle the braces.
@@ -214,7 +214,7 @@ Writes a full analysis report containing:
 - Raw output from every tool
 
 ```bash
-python prodigy.py challenge.png -o writeup.txt
+python main.py challenge.png -o writeup.txt
 ```
 
 Perfect for pasting into a CTF writeup.
@@ -224,7 +224,7 @@ Perfect for pasting into a CTF writeup.
 Machine-readable output for CI, automation, or dashboards:
 
 ```bash
-python prodigy.py challenge.png -j result.json
+python main.py challenge.png -j result.json
 ```
 
 JSON structure:
@@ -252,7 +252,7 @@ Suppress the ASCII skull banner. Useful for:
 - Reducing noise in CI logs
 
 ```bash
-python prodigy.py challenge.png -nb -i > scan.log
+python main.py challenge.png -nb -i > scan.log
 ```
 
 #### `-v / --verbose`
@@ -260,7 +260,7 @@ python prodigy.py challenge.png -nb -i > scan.log
 Print every tool's **raw output** in a bordered panel. Floods your terminal but sometimes the flag is buried in there.
 
 ```bash
-python prodigy.py challenge.png -v -o verbose.txt
+python main.py challenge.png -v -o verbose.txt
 ```
 
 #### `--no-early-exit`
@@ -269,11 +269,11 @@ python prodigy.py challenge.png -v -o verbose.txt
 
 ```bash
 # Default: early exit enabled
-python prodigy.py challenge.png -w rockyou.txt
+python main.py challenge.png -w rockyou.txt
 # → finds flag in module 3, skips modules 4-11
 
 # Full report even after finding a flag
-python prodigy.py challenge.png -w rockyou.txt --no-early-exit
+python main.py challenge.png -w rockyou.txt --no-early-exit
 # → runs all 11 modules regardless
 ```
 
@@ -284,8 +284,8 @@ Use `--no-early-exit` when writing a writeup and you want the complete tool log.
 Skip specific slow stages:
 
 ```bash
-python prodigy.py huge_image.png --no-brute    # no wordlist loop
-python prodigy.py giant_image.jpg --no-xor     # no XOR composite rendering
+python main.py huge_image.png --no-brute    # no wordlist loop
+python main.py giant_image.jpg --no-xor     # no XOR composite rendering
 ```
 
 XOR composites add ~2 seconds per megapixel; skip on huge images unless needed.
@@ -304,7 +304,7 @@ image.png                     ← level 0
 Increase for deeply-nested challenges:
 
 ```bash
-python prodigy.py challenge.png --recursive 5
+python main.py challenge.png --recursive 5
 ```
 
 #### `--timeout N`
@@ -315,7 +315,7 @@ Per-tool timeout in seconds. Default `180`. Increase for:
 - Slow disks
 
 ```bash
-python prodigy.py huge.png --timeout 600
+python main.py huge.png --timeout 600
 ```
 
 ---
@@ -325,7 +325,7 @@ python prodigy.py huge.png --timeout 600
 ### Scenario 1 — You have no idea what's in the file
 
 ```bash
-python prodigy.py mystery.png
+python main.py mystery.png
 ```
 
 Runs everything. Uses `rockyou.txt`. Prints all flags found.
@@ -333,7 +333,7 @@ Runs everything. Uses `rockyou.txt`. Prints all flags found.
 ### Scenario 2 — Standard HackTheBox challenge
 
 ```bash
-python prodigy.py challenge.jpg -w /usr/share/wordlists/rockyou.txt -f "HTB\{.*?\}"
+python main.py challenge.jpg -w /usr/share/wordlists/rockyou.txt -f "HTB\{.*?\}"
 ```
 
 Uses HTB flag format, cracks steghide with rockyou.
@@ -341,7 +341,7 @@ Uses HTB flag format, cracks steghide with rockyou.
 ### Scenario 3 — CTF writeup, need full tool log
 
 ```bash
-python prodigy.py challenge.png --no-early-exit -v -o writeup.txt
+python main.py challenge.png --no-early-exit -v -o writeup.txt
 ```
 
 Skips nothing, verbose output, saves text report.
@@ -350,7 +350,7 @@ Skips nothing, verbose output, saves text report.
 
 ```bash
 for img in images/*.png; do
-    python prodigy.py "$img" -i -nb >> triage.log
+    python main.py "$img" -i -nb >> triage.log
 done
 ```
 
@@ -359,7 +359,7 @@ Basic scans only, no banner, appended to one log.
 ### Scenario 5 — Custom flag format with JSON for automation
 
 ```bash
-python prodigy.py challenge.png -f "CTF\{[a-z0-9_]+\}" -j result.json
+python main.py challenge.png -f "CTF\{[a-z0-9_]+\}" -j result.json
 
 # Then extract flags with jq
 jq -r '.flags[]' result.json
@@ -368,7 +368,7 @@ jq -r '.flags[]' result.json
 ### Scenario 6 — Suspect steghide with a non-rockyou password
 
 ```bash
-python prodigy.py challenge.jpg \
+python main.py challenge.jpg \
     -w ~/custom_wordlist.txt \
     --timeout 600
 ```
@@ -376,7 +376,7 @@ python prodigy.py challenge.jpg \
 ### Scenario 7 — Huge image, need speed
 
 ```bash
-python prodigy.py huge_4k_image.png -i --no-xor --no-brute
+python main.py huge_4k_image.png -i --no-xor --no-brute
 ```
 
 Only recon, metadata, strings, LSB — skips visuals and cracking.
@@ -556,20 +556,20 @@ Try these in order:
 
 ```bash
 # 1. Basic scan with verbose output
-python prodigy.py challenge.png -i -v -o full.txt
+python main.py challenge.png -i -v -o full.txt
 
 # 2. Look inside the artifacts folder manually
 ls prodigy_artifacts/
 # Open bit-planes in an image viewer
 
 # 3. Try the full scan with --no-early-exit
-python prodigy.py challenge.png --no-early-exit -o full.txt
+python main.py challenge.png --no-early-exit -o full.txt
 
 # 4. Custom flag format
-python prodigy.py challenge.png -f "your_regex_here"
+python main.py challenge.png -f "your_regex_here"
 
 # 5. Deeper recursion
-python prodigy.py challenge.png --recursive 5
+python main.py challenge.png --recursive 5
 ```
 
 ### Steghide brute force is super slow
@@ -583,7 +583,7 @@ Install `stegseek` (100× faster):
 Or skip it entirely:
 
 ```bash
-python prodigy.py challenge.png --no-brute
+python main.py challenge.png --no-brute
 ```
 
 ### "very high entropy" warning
@@ -601,13 +601,13 @@ Your terminal doesn't support braille characters or truecolor. Options:
 ### Script crashes on huge image
 
 ```bash
-python prodigy.py huge.png --no-xor --no-brute --timeout 600
+python main.py huge.png --no-xor --no-brute --timeout 600
 ```
 
 Or run in basic mode:
 
 ```bash
-python prodigy.py huge.png -i
+python main.py huge.png -i
 ```
 
 ### Wrong flag format detected
@@ -615,7 +615,7 @@ python prodigy.py huge.png -i
 Pass an explicit regex:
 
 ```bash
-python prodigy.py challenge.png -f "HTB\{[A-Za-z0-9_]+\}"
+python main.py challenge.png -f "HTB\{[A-Za-z0-9_]+\}"
 ```
 
 ---
@@ -659,7 +659,7 @@ Sometimes the steghide payload is another file (a ZIP, a text file, another imag
 If you extracted a file (not text), look in `prodigy_artifacts/steghide_out`.
 
 **Q: How do I add my own flag format permanently?**
-Edit `FLAG_BANK` near the top of `prodigy.py`:
+Edit `FLAG_BANK` near the top of `main.py`:
 
 ```python
 FLAG_BANK = [
