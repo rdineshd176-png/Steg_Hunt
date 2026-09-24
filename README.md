@@ -3,12 +3,12 @@
 **An automated CTF image steganography framework** — finds hidden flags in PNG, JPG, GIF, BMP, and TIFF files by running 11+ specialized scanners, decoding chains, brute-forcing passphrases, and cracking embedded archives.
 
 ```
-    ____            _ _             
-   |  _ \ _ __ ___ | (_) __ _ _   _ 
-   | |_) | '__/ _ \| | |/ _` | | | |
-   |  __/| | | (_) | | | (_| | |_| |
-   |_|   |_|  \___/|_|_|\__, |\__, |
-                        |___/ |___/ 
+ ____                _ _             
+|  _ \ _ __ ___   __| (_) __ _ _   _ 
+| |_) | '__/ _ \ / _` | |/ _` | | | |
+|  __/| | | (_) | (_| | | (_| | |_| |
+|_|   |_|  \___/ \__,_|_|\__, |\__, |
+                         |___/ |___/ 
         ⚡ Prodigy Stego Hunter v3.0 ⚡
 ```
 
